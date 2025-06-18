@@ -1,62 +1,32 @@
 {{> layout/header}}
 
 <div class="container p-5">
-
-    <!-- 수정삭제버튼 -->
-    <div class="d-flex justify-content-end">
-        <button class="btn btn-warning me-1">수정</button>
-        <button class="btn btn-danger">삭제</button>
-    </div>
-    <div class="d-flex justify-content-end">
-        <b>작성자</b> : ssar
-    </div>
-
-    <!-- 게시글내용 -->
-    <div>
-        <h2><b>제목자리</b></h2>
-        <hr />
-        <div class="m-4 p-2">
-            내용입니다
-        </div>
-    </div>
-
-    <!-- 댓글 -->
-    <div class="card mt-3">
-        <!-- 댓글등록 -->
+    <div class="card">
+        <div class="card-header"><b>글쓰기 화면입니다</b></div>
         <div class="card-body">
-            <form action="/reply/save" method="post">
-                <textarea class="form-control" rows="2" name="comment"></textarea>
-                <div class="d-flex justify-content-end">
-                    <button type="submit" class="btn btn-outline-primary mt-1">댓글등록</button>
+            <!--
+            action="/board/save": 폼 제출시 /board/save 경로로 요청
+            method="post": HTTP POST 방식으로 데이터 전송
+            GET: URL에 데이터 노출, POST: 요청 본문에 데이터 숨김
+            -->
+            <form action="/board/save" method="post">
+                <!--
+                name 속성: 서버에서 받을 때 사용하는 변수명
+                name="username" → 컨트롤러에서 String username으로 받음
+                -->
+                <div class="mb-3">
+                    <input type="text" class="form-control" placeholder="Enter username" name="username">
                 </div>
+                <div class="mb-3">
+                    <input type="text" class="form-control" placeholder="Enter title" name="title">
+                </div>
+                <div class="mb-3">
+                    <!-- textarea: 여러 줄 텍스트 입력 가능 -->
+                    <textarea class="form-control" rows="5" name="content"></textarea>
+                </div>
+                <!-- 버튼 클릭시 폼이 제출됨 -->
+                <button class="btn btn-primary form-control">글쓰기완료</button>
             </form>
-        </div>
-
-        <!-- 댓글목록 -->
-        <div class="card-footer">
-            <b>댓글리스트</b>
-        </div>
-        <div class="list-group">
-            <!-- 댓글아이템 -->
-            <div class="list-group-item d-flex justify-content-between align-items-center">
-                <div class="d-flex">
-                    <div class="px-1 me-1 bg-primary text-white rounded">cos</div>
-                    <div>댓글 내용입니다</div>
-                </div>
-                <form action="/reply/1/delete" method="post">
-                    <button class="btn">🗑</button>
-                </form>
-            </div>
-            <!-- 댓글아이템 -->
-            <div class="list-group-item d-flex justify-content-between align-items-center">
-                <div class="d-flex">
-                    <div class="px-1 me-1 bg-primary text-white rounded">ssar</div>
-                    <div>댓글 내용입니다</div>
-                </div>
-                <form action="/reply/1/delete" method="post">
-                    <button class="btn">🗑</button>
-                </form>
-            </div>
         </div>
     </div>
 </div>
