@@ -15,10 +15,20 @@ public class BoardNativeRepository {
     // 데이터베이스와의 모든 작업을 담당
     private EntityManager em;
 
+
     // 생성자를 확인해서 자동으로 EntityManager 객체를 주입 시킨다.
     // DI 처리
     public BoardNativeRepository(EntityManager em) {
         this.em = em;
+    }
+
+    // 특정 게시글을 삭제하는 메서드
+    @Transactional
+    public void deleteById(Long id) {
+        Query query = em.createNativeQuery("delete from board_tb where id = ? ");
+        query.setParameter(1,id);
+        // Insert, Update, Delete 실행 시킬 때
+        query.executeUpdate();
     }
 
     public Board findById(Long id) {

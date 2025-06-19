@@ -24,6 +24,21 @@ public class BoardNativeRepositoryTest {
 //    }
 
     @Test
+    public void deleteById_test() {
+        // given
+        Long id = 4L;
+
+        //when
+        br.deleteById(id);
+
+        // then
+        // 조회했을 때 3개 나와야 함
+        List<Board> boardList = br.findAll();
+        Assertions.assertThat(boardList.size()).isEqualTo(3);
+
+    }
+
+    @Test
     public void findById_test() {
         // given
         Long id = 1L;
