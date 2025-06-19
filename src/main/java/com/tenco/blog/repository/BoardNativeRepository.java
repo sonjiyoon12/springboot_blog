@@ -31,6 +31,7 @@ public class BoardNativeRepository {
         query.executeUpdate();
     }
 
+    // 특정 게시글 조회
     public Board findById(Long id) {
         // where 조건절을 활용해서 단건의 데이터를 조회
         String sqlSrt = "select * from board_tb where id = ? ";
@@ -74,5 +75,23 @@ public class BoardNativeRepository {
         query.setParameter(3,username);
 
         query.executeUpdate();
+    }
+
+    // 상세보기 화면 수정페이지
+    @Transactional
+    public void updateById(Long id, String title, String content, String username) {
+        // update 쿼리, where 절 반드시 사용
+        String sqlStr = "UPDATE board_tb SET title = ?," +
+                        " content = ?, username = ? " +
+                        " WHERE id = ? ";
+         Query query = em.createNativeQuery(sqlStr);
+
+         query.setParameter(1,title);
+         query.setParameter(2,content);
+         query.setParameter(3,username);
+         query.setParameter(4,id);
+
+        int updateRows = query.executeUpdate();
+        System.out.printf("수정된 행의 개수 : " + updateRows);
     }
 }

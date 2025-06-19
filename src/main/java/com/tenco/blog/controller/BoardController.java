@@ -4,10 +4,7 @@ import com.tenco.blog.model.Board;
 import com.tenco.blog.repository.BoardNativeRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -21,6 +18,34 @@ public class BoardController {
         this.boardNativeRepository = boardNativeRepository;
     }
 
+    // 수정 후  리다이렉트 페이지 요청
+    @PostMapping("/board/{id}/update-form")
+    public String update(@PathVariable (name = "id") Long id,
+                         @RequestParam(name = "title") String title,
+                         @RequestParam(name = "content") String content,
+                         @RequestParam(name = "username") String username,
+                         HttpServletRequest request) {
+
+        boardNativeRepository.updateById(id, title, content, username);
+
+        // PRG 패턴 적용
+        // 수정 완료 후 해당 게시글 상세보기 페이지로 리다이렉트
+        // 게시글 상세보기 URL --> /board/{id}
+        return "redirect:/board/" + id;
+    }
+
+    // 게시글 수정 화면 요청 GET 방식
+    // /board/{{board.id}}/update-form
+    @GetMapping("/board/{id}/update-form")
+    public String updateForm(@PathVariable (name = "id") Long id,
+                             HttpServletRequest request) {
+       Board board = boardNativeRepository.findById(id);
+       request.setAttribute("board", board);
+
+       return "board/update-form";
+    }
+
+    // 삭제 후 페이지 리다이렉트 요청
     @PostMapping("/board/{id}/delete")
     public String delete(@PathVariable (name = "id") Long id) {
         // 클라이언트 --> 삭제 요청 처리 --> 응답: 리다이렉트 -- 클라이언트 --> / --> 응답
@@ -47,6 +72,7 @@ public class BoardController {
 
     }
 
+    // 게시글 생성
     @PostMapping("/board/save")
     // username, title, content <-- DTO 받는 방법, 기본 데이터 타입 설정
     // form 태그에서 넘어오는 데이터 받기
@@ -80,6 +106,8 @@ public class BoardController {
         return "index";
     }
 
+
+    // 글쓰기 화면 보여주기
     @GetMapping("/board/save-form")
     public String saveForm() {
         // /templates/board
