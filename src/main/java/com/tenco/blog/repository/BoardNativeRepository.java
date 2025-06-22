@@ -22,6 +22,25 @@ public class BoardNativeRepository {
         this.em = em;
     }
 
+
+    // 상세보기 화면 수정페이지
+    @Transactional
+    public void updateById(Long id, String title, String content, String username) {
+        // update 쿼리, where 절 반드시 사용
+        String sqlStr = "UPDATE board_tb SET title = ?," +
+                " content = ?, username = ? " +
+                " WHERE id = ? ";
+        Query query = em.createNativeQuery(sqlStr);
+
+        query.setParameter(1,title);
+        query.setParameter(2,content);
+        query.setParameter(3,username);
+        query.setParameter(4,id);
+
+        int updateRows = query.executeUpdate();
+        System.out.printf("수정된 행의 개수 : " + updateRows);
+    }
+
     // 특정 게시글을 삭제하는 메서드
     @Transactional
     public void deleteById(Long id) {
@@ -77,21 +96,5 @@ public class BoardNativeRepository {
         query.executeUpdate();
     }
 
-    // 상세보기 화면 수정페이지
-    @Transactional
-    public void updateById(Long id, String title, String content, String username) {
-        // update 쿼리, where 절 반드시 사용
-        String sqlStr = "UPDATE board_tb SET title = ?," +
-                        " content = ?, username = ? " +
-                        " WHERE id = ? ";
-         Query query = em.createNativeQuery(sqlStr);
 
-         query.setParameter(1,title);
-         query.setParameter(2,content);
-         query.setParameter(3,username);
-         query.setParameter(4,id);
-
-        int updateRows = query.executeUpdate();
-        System.out.printf("수정된 행의 개수 : " + updateRows);
-    }
 }
